@@ -1,0 +1,76 @@
+apply plugin: 'com.android.application'
+
+
+println("hello gradle")
+println "hello gradle"
+
+//println "${userName}" 简写
+
+rootProject.ext.userName = 123 //弱类型语言
+println "${rootProject.ext.userName}"
+
+//赋值与引用
+def androidId = rootProject.ext.androidId
+def appId = rootProject.ext.appId
+
+// rootProject.ext.dependencies.appcompat
+// dependencies.appcompat
+def dependens = rootProject.ext.dependencies
+
+android {
+    compileSdkVersion androidId.compileSdkVersion
+    buildToolsVersion androidId.buildToolsVersion
+    defaultConfig {
+        applicationId appId.applicationId
+        minSdkVersion androidId.minSdkVersion
+        targetSdkVersion androidId.targetSdkVersion
+        versionCode androidId.versionCode
+        versionName androidId.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+        buildConfigField("boolean", "isRelease", String.valueOf(isRelease))
+
+
+        // 在gradle文件中配置选项参数值（用于APT传参接收）
+        // 切记：必须写在defaultConfig节点下
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [MODEL_NAME : project.getName()]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation dependens.appcompat
+    implementation dependens.constraintlayout
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    //标准写法
+    implementation group: "androidx.test.espresso", name: "espresso-core", version: "3.2.0"
+    //简写
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    //依赖library
+//    implementation project(":library")
+
+
+    //最简洁方式
+    dependens.each { k, v -> implementation v }
+    if (isRelease) {
+        implementation project(":order")
+        implementation project(":personal")
+    }
+
+
+    implementation project(":annotation")
+    annotationProcessor project(":complier")
+}

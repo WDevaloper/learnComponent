@@ -1,0 +1,39 @@
+// 添加多个自定义属性，可以通过ext代码块
+ext {
+    userName = "wfy"
+
+
+    isRelease = true
+
+    //建立Map存储，对象名、key都可以自定义，groovy糖果语法，非常灵活
+
+
+    androidId = [
+            compileSdkVersion: 29,
+            buildToolsVersion: "29.0.2",
+            minSdkVersion    : 15,
+            targetSdkVersion : 29,
+            versionCode      : 1,
+            versionName      : "1.0"
+    ]
+
+    appId = [
+            app: "com.wfy.learncompoent",
+            order: "com.wfy.order",
+            personal: "com.wfy.personal"
+    ]
+
+    url = [
+            debug  : "http://192.0.0.1:8080",
+            release: "http://192.0.0.1:8080"
+    ]
+
+    //定义变量
+    def appcompatVersion = "1.1.0"
+    def constraintLayoutVersion = "1.1.0"
+
+    dependencies = [
+            "appcompat"       : "androidx.appcompat:appcompat:${appcompatVersion}",
+            "constraintlayout": "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}",
+    ]
+}

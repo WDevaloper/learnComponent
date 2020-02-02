@@ -1,0 +1,2 @@
+include ':app', ':order', ':personal', ':annotation', ':complier'
+rootProject.name='LearnCompoent'
