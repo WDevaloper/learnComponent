@@ -61,8 +61,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     dependens.each { k, v -> implementation v }
-
-
     implementation project(":annotation")
     annotationProcessor project(":complier")
 }
