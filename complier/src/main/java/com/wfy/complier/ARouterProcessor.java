@@ -13,7 +13,6 @@ import com.wfy.annotation.model.RouterBean;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -181,6 +180,7 @@ public class ARouterProcessor extends AbstractProcessor {
 
         //遍历分组，每一个分组创建一个路劲文件ARouter$$Path$$order
         Set<Map.Entry<String, List<RouterBean>>> entries = tempPathMap.entrySet();
+        messager.printMessage(Diagnostic.Kind.NOTE, "" + entries);
         for (Map.Entry<String, List<RouterBean>> entry : entries) {
             // public Map<String, RouterBean> loadPath() {
             MethodSpec.Builder builder = MethodSpec.methodBuilder(Constants.PATH_METHOD_NAME)
@@ -303,7 +303,11 @@ public class ARouterProcessor extends AbstractProcessor {
     private void valueOfPathMap(RouterBean routerBean) {
         if (checkRouterPathRule(routerBean)) {
             messager.printMessage(Diagnostic.Kind.NOTE, "RouterBean >>>" + routerBean);
+
             List<RouterBean> routerBeans = tempPathMap.get(routerBean.getGroup());
+
+            messager.printMessage(Diagnostic.Kind.NOTE, "routerBeans >>>" + routerBeans);
+
             if (EmptyUtils.isEmpty(routerBeans)) {
                 routerBeans = new CopyOnWriteArrayList<>();
                 routerBeans.add(routerBean);
@@ -311,13 +315,14 @@ public class ARouterProcessor extends AbstractProcessor {
             } else {
                 for (RouterBean bean : routerBeans) {
                     if (!routerBean.getPath().equalsIgnoreCase(bean.getPath())) {
-                        routerBeans.add(bean);
+                        routerBeans.add(routerBean);
                     }
                 }
             }
         } else {
             messager.printMessage(Diagnostic.Kind.ERROR, "@ARouter注解未按规范配置，如：/app/MainActivity");
         }
+        messager.printMessage(Diagnostic.Kind.NOTE, "tempPathMap >>>" + tempPathMap);
     }
 
     /**

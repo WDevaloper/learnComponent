@@ -8,13 +8,15 @@ import android.view.View;
 
 import com.wfy.annotation.ARouter;
 import com.wfy.annotation.model.RouterBean;
+import com.wfy.arouter_api.core.ARouterLoadGroup;
 import com.wfy.arouter_api.core.ARouterLoadPath;
 import com.wfy.learncompoent.test.ARouter$$Group$$order;
+import com.wfy.modular.apt.ARouter$$Group$$app;
 
 import java.util.Map;
 
 
-@ARouter(path = "/app2/MainActivity",group = "app")
+@ARouter(path = "/app2/MainActivity", group = "app")
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -25,6 +27,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void jumpOrder(View view) {
+        ARouterLoadGroup group = new ARouter$$Group$$order();
+        Map<String, Class<? extends ARouterLoadPath>> loadGroup = group.loadGroup();
+        Class<? extends ARouterLoadPath> aClass = loadGroup.get("order");
+        try {
+            ARouterLoadPath aRouterLoadPath = aClass.newInstance();
+            Map<String, RouterBean> routerBeanMap = aRouterLoadPath.loadPath();
+            RouterBean routerBean = routerBeanMap.get("/order/Order_MainActivity");
+            Intent intent = new Intent(this, routerBean.getClzz());
+            intent.putExtra("name", "wfy");
+            startActivity(intent);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void code() {
         ARouter$$Group$$order aRouter$$Group$$order = new ARouter$$Group$$order();
         Map<String, Class<? extends ARouterLoadPath>> group = aRouter$$Group$$order.loadGroup();
         // 通过组名获取ARouterLoadPath,一般我们要跳转到指定的Activity，需要提供一个路径，如：/app/MainActivity
