@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.wfy.annotation.ARouter;
 import com.wfy.order.R;
 
+@ARouter(path = "/order/Order_DebugMainActivity")
 public class Order_DebugMainActivity extends AppCompatActivity {
 
     @Override

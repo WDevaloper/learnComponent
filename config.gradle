@@ -3,6 +3,8 @@ ext {
     userName = "wfy"
 
 
+    packageNameForAPT = "com.wfy.modular.apt"
+
     isRelease = true
 
     //建立Map存储，对象名、key都可以自定义，groovy糖果语法，非常灵活
@@ -18,8 +20,8 @@ ext {
     ]
 
     appId = [
-            app: "com.wfy.learncompoent",
-            order: "com.wfy.order",
+            app     : "com.wfy.learncompoent",
+            order   : "com.wfy.order",
             personal: "com.wfy.personal"
     ]
 

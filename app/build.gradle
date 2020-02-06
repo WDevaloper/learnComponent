@@ -36,7 +36,7 @@ android {
         // 切记：必须写在defaultConfig节点下
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [MODEL_NAME : project.getName()]
+                arguments = [MODEL_NAME: project.getName(), packageNameForAPT: packageNameForAPT]
             }
         }
     }
@@ -69,8 +69,7 @@ dependencies {
         implementation project(":order")
         implementation project(":personal")
     }
-
-
-    implementation project(":annotation")
     annotationProcessor project(":complier")
+    implementation project(":common")
+
 }
