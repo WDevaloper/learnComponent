@@ -10,8 +10,9 @@ import com.wfy.annotation.ARouter;
 import com.wfy.annotation.model.RouterBean;
 import com.wfy.arouter_api.core.ARouterLoadGroup;
 import com.wfy.arouter_api.core.ARouterLoadPath;
+import com.wfy.common.User;
 import com.wfy.learncompoent.test.ARouter$$Group$$order;
-import com.wfy.modular.apt.ARouter$$Group$$app;
+import com.wfy.order.Order_MainActivity;
 
 import java.util.Map;
 
@@ -19,10 +20,17 @@ import java.util.Map;
 @ARouter(path = "/app2/MainActivity", group = "app")
 public class MainActivity extends AppCompatActivity {
 
+    int age = 1;
+    User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = new Intent(this, Order_MainActivity.class);
+        intent.putExtra("age", 22);
+        intent.putExtra("user", new User());
+        startActivity(intent);
     }
 
 

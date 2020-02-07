@@ -74,6 +74,7 @@ public class ARouterProcessor extends AbstractProcessor {
     private String packageNameForAPT;
 
 
+    //需要注意并发引发的错误
     // 临时map存储，用来存放路由组Group对应的详细Path类对象，生成路由路径类文件时遍历
     // key:组名"app", value:"app"组的路由路径"ARouter$$Path$$app.class"
     private Map<String, List<RouterBean>> tempPathMap = new ConcurrentHashMap<>();
