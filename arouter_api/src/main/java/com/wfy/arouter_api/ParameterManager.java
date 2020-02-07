@@ -15,7 +15,7 @@ public class ParameterManager {
 
     private ParameterManager() {
         // 初始化，并赋值缓存中条目的最大值
-        cache = new LruCache<>(163);
+        cache = new LruCache<>(128);
     }
 
     public static ParameterManager getInstance() {

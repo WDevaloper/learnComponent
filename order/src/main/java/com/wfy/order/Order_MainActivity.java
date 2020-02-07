@@ -11,6 +11,8 @@ import com.wfy.annotation.Parameter;
 import com.wfy.arouter_api.ParameterManager;
 import com.wfy.common.User;
 
+import java.util.List;
+
 @ARouter(path = "/order/Order_MainActivity")
 public class Order_MainActivity extends AppCompatActivity {
 
@@ -22,6 +24,10 @@ public class Order_MainActivity extends AppCompatActivity {
 
     @Parameter
     User user;
+
+
+    @Parameter
+    List<User> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

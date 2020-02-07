@@ -5,6 +5,7 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
+import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.wfy.annotation.Parameter;
@@ -149,52 +150,52 @@ public class ParameterProcessor extends AbstractProcessor {
                 //如：t.age = target.getIntent().getStringExtra("age", 1);
                 String finalValue = "t" + "." + annotationValue;
 
-                String methodContent;
+
+                StringBuilder buffer = new StringBuilder();
                 if (typeUtils.isSubtype(otherType, activityTypeMirror)) {//activity
-                    methodContent = finalValue + " =  t.getIntent().";
                     if (type == TypeKind.INT.ordinal()) {
-                        methodContent += "getIntExtra($S," + finalValue + ")";
+                        buffer.append(finalValue).append(" =  t.getIntent().");
+                        buffer.append("getIntExtra($S,").append(finalValue).append(")");
                     } else if (type == TypeKind.BOOLEAN.ordinal()) {
-                        methodContent += "getBooleanExtra($S," + finalValue + ")";
+                        buffer.append(finalValue).append(" =  t.getIntent().");
+                        buffer.append("getBooleanExtra($S,").append(finalValue).append(")");
                     } else {
                         if (typeMirror.toString().equalsIgnoreCase(Constants.STRING)) {
-                            methodContent += "getStringExtra($S)";
+                            buffer.append(finalValue).append(" =  t.getIntent().");
+                            buffer.append("getStringExtra($S)");
                         } else if (typeUtils.isSubtype(element.asType(),
                                 parcelableTypeMirror)) {//Parcelable
-                            methodContent += "getParcelableExtra($S)";
+                            buffer.append(finalValue).append(" =  t.getIntent().");
+                            buffer.append("getParcelableExtra($S)");
                         }
                     }
-                    builder.addStatement(methodContent, annotationValue);
+                    builder.addStatement(buffer.toString(), annotationValue);
                 } else if (typeUtils.isSubtype(otherType, appFragmentTypeMirror) ||
                         typeUtils.isSubtype(otherType, androidXFragmentTypeMirror)) {//fragment
-                    methodContent = finalValue + " =  t.getArguments().";
+                    buffer.append(finalValue).append(" =  t.getArguments().");
                     if (type == TypeKind.INT.ordinal()) {
-                        methodContent += "getInt($S," + finalValue + ")";
+                        buffer.append("getInt($S,").append(finalValue).append(")");
                     } else if (type == TypeKind.BOOLEAN.ordinal()) {
-                        methodContent += "getBoolean($S," + finalValue + ")";
+                        buffer.append("getBoolean($S,").append(finalValue).append(")");
                     } else {
                         if (typeMirror.toString().equalsIgnoreCase(Constants.STRING)) {
-                            methodContent += "getString($S," + finalValue + ")";
+                            buffer.append("getString($S,").append(finalValue).append(")");
                         }
                     }
-                    builder.addStatement(methodContent, annotationValue);
+                    builder.addStatement(buffer.toString(), annotationValue);
                 }
             }
-
-
             String finalClassName = otherClassName.simpleName() + Constants.PARAMETER_FILE_NAME;
             messager.printMessage(Diagnostic.Kind.NOTE, otherClassName.packageName() + "生成parameter注解的类名 >>> " + finalClassName);
 
-
-            TypeSpec.Builder typeSpec =
-                    TypeSpec.classBuilder(finalClassName)
-                            .addModifiers(Modifier.PUBLIC)
-                            .addSuperinterface(ClassName.get(typeElement))
-                            .addMethod(builder.build());
-
             try {
-                JavaFile.builder(otherClassName.packageName(), typeSpec.build())
-                        .build().writeTo(filer);
+                JavaFile.builder(
+                        otherClassName.packageName(),
+                        TypeSpec.classBuilder(finalClassName)
+                                .addModifiers(Modifier.PUBLIC)
+                                .addSuperinterface(ClassName.get(typeElement))
+                                .addMethod(builder.build()).build()
+                ).build().writeTo(filer);
             } catch (IOException e) {
                 e.printStackTrace();
             }

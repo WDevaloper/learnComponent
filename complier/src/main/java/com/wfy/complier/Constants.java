@@ -12,6 +12,7 @@ public class Constants {
     // Activity全类名
     public static final String ACTIVITY = "android.app.Activity";
     public static final String PARCELABLE = "android.os.Parcelable";
+    public static final String PARCELABLE_LIST = "java.util.List<android.os.Parcelable>";
     public static final String ANDROIDX_FRAGMENT  = "androidx.fragment.app.Fragment";
     public static final String APP_FRAGMENT  = "android.app.Fragment";
 

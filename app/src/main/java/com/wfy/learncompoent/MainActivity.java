@@ -28,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(this, Order_MainActivity.class);
-        intent.putExtra("age", 22);
-        intent.putExtra("user", new User());
+        Bundle bundle = new Bundle();
+        bundle.putInt("age", 22);
+        intent.putExtra("bundle", bundle);
         startActivity(intent);
     }
 
