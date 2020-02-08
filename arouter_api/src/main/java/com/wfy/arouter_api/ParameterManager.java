@@ -4,6 +4,10 @@ import androidx.collection.LruCache;
 
 import com.wfy.arouter_api.core.ParameterInject;
 
+
+/**
+ * 参数Parameter加载管理器
+ */
 public class ParameterManager {
 
     private volatile static ParameterManager instance;
@@ -30,6 +34,12 @@ public class ParameterManager {
     }
 
 
+    /**
+     * @param target 需要注入的对象，如：MainActivity
+     *               <p>
+     *               因为我们生成的 参数注入类是有一定的规则，并且是同包的，如：Order_MainActivity$$Parameter，即类名$$Parameter，所以
+     *               我们可以通过注入对像的类名去拼接$$Parameter，通过反射创建该对象并缓存起来
+     */
     public void inject(Object target) {
         String className = target.getClass().getName();
         // 查找缓存集合中是否有对应activity的value

@@ -63,7 +63,7 @@ import javax.tools.JavaFileObject;
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({Constants.ARouter_annotation_types})
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
-@SupportedOptions({Constants.MODEL_NAME, Constants.APT_PACKAGE_NAME})
+@SupportedOptions({Constants.MODEL_NAME})
 public class ARouterProcessor extends AbstractProcessor {
 
     private Elements elementUtils;
@@ -95,7 +95,7 @@ public class ARouterProcessor extends AbstractProcessor {
         Map<String, String> options = processingEnvironment.getOptions();
         if (!EmptyUtils.isEmpty(options)) {
             modelName = options.get(Constants.MODEL_NAME);
-            packageNameForAPT = options.get(Constants.APT_PACKAGE_NAME);
+            packageNameForAPT = Constants.APT_PACKAGE_NAME;
 
             messager.printMessage(Diagnostic.Kind.NOTE, "modelName >>>" + modelName);
             messager.printMessage(Diagnostic.Kind.NOTE, "packageNameForAPT >>>" + packageNameForAPT);

@@ -3,7 +3,7 @@ ext {
     userName = "wfy"
 
 
-    packageNameForAPT = "com.wfy.modular.apt"
+
 
     isRelease = true
 

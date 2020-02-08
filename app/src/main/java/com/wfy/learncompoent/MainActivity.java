@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.wfy.annotation.ARouter;
 import com.wfy.annotation.model.RouterBean;
+import com.wfy.arouter_api.RouterManager;
 import com.wfy.arouter_api.core.ARouterLoadGroup;
 import com.wfy.arouter_api.core.ARouterLoadPath;
 import com.wfy.common.User;
@@ -27,30 +28,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, Order_MainActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putInt("age", 22);
-        intent.putExtra("bundle", bundle);
-        startActivity(intent);
     }
 
 
     public void jumpOrder(View view) {
-        ARouterLoadGroup group = new ARouter$$Group$$order();
-        Map<String, Class<? extends ARouterLoadPath>> loadGroup = group.loadGroup();
-        Class<? extends ARouterLoadPath> aClass = loadGroup.get("order");
-        try {
-            ARouterLoadPath aRouterLoadPath = aClass.newInstance();
-            Map<String, RouterBean> routerBeanMap = aRouterLoadPath.loadPath();
-            RouterBean routerBean = routerBeanMap.get("/order/Order_MainActivity");
-            Intent intent = new Intent(this, routerBean.getClzz());
-            intent.putExtra("name", "wfy");
-            startActivity(intent);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
+        RouterManager
+                .getInstance()
+                .build("/order/Order_MainActivity")
+                .navigation(this, 10);
     }
 
     private void code() {

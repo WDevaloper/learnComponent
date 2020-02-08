@@ -5,16 +5,16 @@ public class Constants {
     public final static String PARAMETER_ANNOTATION_TYPES = "com.wfy.annotation.Parameter";
 
     public final static String MODEL_NAME = "MODEL_NAME";
-    public final static String APT_PACKAGE_NAME = "packageNameForAPT";
+    public final static String APT_PACKAGE_NAME = "com.wfy.arouter.apt";
 
     // String全类名
     public static final String STRING = "java.lang.String";
     // Activity全类名
     public static final String ACTIVITY = "android.app.Activity";
     public static final String PARCELABLE = "android.os.Parcelable";
-    public static final String PARCELABLE_LIST = "java.util.List<android.os.Parcelable>";
-    public static final String ANDROIDX_FRAGMENT  = "androidx.fragment.app.Fragment";
-    public static final String APP_FRAGMENT  = "android.app.Fragment";
+    public static final String SERIALIZABLE = "java.io.Serializable";
+    public static final String ANDROIDX_FRAGMENT = "androidx.fragment.app.Fragment";
+    public static final String APP_FRAGMENT = "android.app.Fragment";
 
     // 包名前缀封装
     public static final String BASE_PACKAGE = "com.wfy.arouter_api";
@@ -46,7 +46,6 @@ public class Constants {
     public static final String PARAMETER_NAMR = "target";
     // 获取参数，参数名
     public static final String PARAMETER_METHOD_NAME = "inject";
-
 
 
 }

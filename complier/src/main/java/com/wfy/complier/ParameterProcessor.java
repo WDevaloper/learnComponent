@@ -5,7 +5,6 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 import com.wfy.annotation.Parameter;
@@ -70,6 +69,7 @@ public class ParameterProcessor extends AbstractProcessor {
     private TypeMirror androidXFragmentTypeMirror;
     private TypeMirror appFragmentTypeMirror;
     private TypeMirror parcelableTypeMirror;
+    private TypeMirror serializableTypeMirror;
 
 
     //临时map存储，用来存放@Parameter注解的属性集合，生成类文件时遍历
@@ -88,6 +88,7 @@ public class ParameterProcessor extends AbstractProcessor {
         appFragmentTypeMirror = elementUtils.getTypeElement(Constants.APP_FRAGMENT).asType();
         androidXFragmentTypeMirror = elementUtils.getTypeElement(Constants.ANDROIDX_FRAGMENT).asType();
         parcelableTypeMirror = elementUtils.getTypeElement(Constants.PARCELABLE).asType();
+        serializableTypeMirror = elementUtils.getTypeElement(Constants.SERIALIZABLE).asType();
     }
 
     /**
@@ -138,11 +139,13 @@ public class ParameterProcessor extends AbstractProcessor {
             List<Element> elements = entry.getValue();
 
             for (Element element : elements) {
-                //被@Parameter注解类信息
+                //被@Parameter注解属性信息
                 TypeMirror typeMirror = element.asType();
                 int type = typeMirror.getKind().ordinal();
                 // 被@Parameter注解的属性名
                 String filedName = element.getSimpleName().toString();
+
+
                 // @Parameter注解获取属性名
                 String annotationValue = element.getAnnotation(Parameter.class).name();
                 annotationValue = EmptyUtils.isEmpty(annotationValue) ? filedName : annotationValue;
@@ -159,15 +162,24 @@ public class ParameterProcessor extends AbstractProcessor {
                     } else if (type == TypeKind.BOOLEAN.ordinal()) {
                         buffer.append(finalValue).append(" =  t.getIntent().");
                         buffer.append("getBooleanExtra($S,").append(finalValue).append(")");
-                    } else {
-                        if (typeMirror.toString().equalsIgnoreCase(Constants.STRING)) {
-                            buffer.append(finalValue).append(" =  t.getIntent().");
-                            buffer.append("getStringExtra($S)");
-                        } else if (typeUtils.isSubtype(element.asType(),
-                                parcelableTypeMirror)) {//Parcelable
-                            buffer.append(finalValue).append(" =  t.getIntent().");
-                            buffer.append("getParcelableExtra($S)");
-                        }
+                    } else if (typeMirror.toString().equalsIgnoreCase(Constants.STRING)) {
+                        buffer.append(finalValue).append(" =  t.getIntent().");
+                        buffer.append("getStringExtra($S)");
+                    } else if (typeUtils.isSubtype(element.asType(), parcelableTypeMirror)) {//Parcelable
+                        buffer.append(finalValue).append(" =  t.getIntent().");
+                        buffer.append("getParcelableExtra($S)");
+                    } else if (typeUtils.isSubtype(element.asType(), serializableTypeMirror)) {
+                        buffer.append(finalValue).append(" =  t.getIntent().");
+                        buffer.append("getSerializableExtra($S)");
+                    } else if (type == TypeKind.DOUBLE.ordinal()) {
+                        buffer.append(finalValue).append(" =  t.getIntent().");
+                        buffer.append("getDoubleExtra($S,").append(finalValue).append(")");
+                    } else if (type == TypeKind.FLOAT.ordinal()) {
+                        buffer.append(finalValue).append(" =  t.getIntent().");
+                        buffer.append("getFloatExtra($S,").append(finalValue).append(")");
+                    } else if (type == TypeKind.LONG.ordinal()) {
+                        buffer.append(finalValue).append(" =  t.getIntent().");
+                        buffer.append("getLongExtra($S,").append(finalValue).append(")");
                     }
                     builder.addStatement(buffer.toString(), annotationValue);
                 } else if (typeUtils.isSubtype(otherType, appFragmentTypeMirror) ||
@@ -177,10 +189,8 @@ public class ParameterProcessor extends AbstractProcessor {
                         buffer.append("getInt($S,").append(finalValue).append(")");
                     } else if (type == TypeKind.BOOLEAN.ordinal()) {
                         buffer.append("getBoolean($S,").append(finalValue).append(")");
-                    } else {
-                        if (typeMirror.toString().equalsIgnoreCase(Constants.STRING)) {
-                            buffer.append("getString($S,").append(finalValue).append(")");
-                        }
+                    } else if (typeMirror.toString().equalsIgnoreCase(Constants.STRING)) {
+                        buffer.append("getString($S,").append(finalValue).append(")");
                     }
                     builder.addStatement(buffer.toString(), annotationValue);
                 }

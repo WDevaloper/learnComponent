@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.wfy.annotation.ARouter;
@@ -11,6 +12,7 @@ import com.wfy.annotation.Parameter;
 import com.wfy.arouter_api.ParameterManager;
 import com.wfy.common.User;
 
+import java.io.Serializable;
 import java.util.List;
 
 @ARouter(path = "/order/Order_MainActivity")

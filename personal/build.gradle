@@ -30,7 +30,7 @@ android {
         // 切记：必须写在defaultConfig节点下
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [MODEL_NAME: project.getName(), packageNameForAPT: packageNameForAPT]
+                arguments = [MODEL_NAME: project.getName()]
             }
         }
     }
