@@ -37,7 +37,7 @@ import javax.tools.Diagnostic;
 
 
 /**
- * 每个模块都会调用一次，会在指定模块下生成java文件，那么我们如何使用这些文件？,需要在待注入的对象同包
+ * 每个模块都会调用一次，会在指定模块下生成java文件，那么我们如何使用这些文件？
  * <p>
  * <p>
  * <p>
@@ -51,6 +51,8 @@ import javax.tools.Diagnostic;
  * ClassName:用来包装一个类
  * TypeName：类型，如在添加返回值类型使用TypeName.VOID
  * <p>
+ * <p>
+ * 需要在待注入的对象同包
  * $S:字符串，如：$S,"JavaPoet" ->将$S赋值为"JavaPoet"
  * $L: 字面量，如："int value = $L",10
  * $N: 变量，如，user.$N,"name"
