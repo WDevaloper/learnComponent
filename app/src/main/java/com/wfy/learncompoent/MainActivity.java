@@ -11,10 +11,15 @@ import com.wfy.annotation.model.RouterBean;
 import com.wfy.arouter_api.RouterManager;
 import com.wfy.arouter_api.core.ARouterLoadGroup;
 import com.wfy.arouter_api.core.ARouterLoadPath;
+import com.wfy.common.Order;
 import com.wfy.common.User;
 import com.wfy.learncompoent.test.ARouter$$Group$$order;
 import com.wfy.order.Order_MainActivity;
 
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -23,11 +28,29 @@ public class MainActivity extends AppCompatActivity {
 
     int age = 1;
     User user;
+    ArrayList<User> users = new ArrayList<>();
+    ArrayList<Order> orders = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = new Intent(this, Order_MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("age", 88);
+        bundle.putParcelable("user", new User());
+        users.add(new User());
+        bundle.putParcelableArrayList("users", users);
+
+        bundle.putSerializable("order", new Order());
+        bundle.putSerializable("orders",orders);
+
+
+        intent.putExtras(bundle);
+
+        intent.putExtra("bundle",bundle);
+
+        startActivity(intent);
     }
 
 

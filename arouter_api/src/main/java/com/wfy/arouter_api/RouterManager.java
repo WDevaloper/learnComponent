@@ -44,10 +44,10 @@ public class RouterManager {
     }
 
     private RouterManager() {
-        // 初始化，并赋值缓存中条目的最大值（最多163组）
-        groupCache = new LruCache<>(163);
-        // 每组最多163条路径值
-        pathCache = new LruCache<>(163);
+        // 初始化，并赋值缓存中条目的最大值（最多128组）
+        groupCache = new LruCache<>(128);
+        // 每组最多128条路径值
+        pathCache = new LruCache<>(128);
     }
 
     public RouterManager build(String path) {
@@ -145,4 +145,14 @@ public class RouterManager {
         }
         return null;
     }
+
+    /**
+     * 注入属性
+     *
+     * @param target
+     */
+    public static void  inject(Object target) {
+        ParameterManager.getInstance().inject(target);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.wfy.complier;
 
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
@@ -36,7 +37,7 @@ import javax.tools.Diagnostic;
 
 
 /**
- * 每个模块都会调用一次，会在指定模块下生成java文件，那么我们如何使用这些文件？
+ * 每个模块都会调用一次，会在指定模块下生成java文件，那么我们如何使用这些文件？,需要在待注入的对象同包
  * <p>
  * <p>
  * <p>
@@ -165,12 +166,6 @@ public class ParameterProcessor extends AbstractProcessor {
                     } else if (typeMirror.toString().equalsIgnoreCase(Constants.STRING)) {
                         buffer.append(finalValue).append(" =  t.getIntent().");
                         buffer.append("getStringExtra($S)");
-                    } else if (typeUtils.isSubtype(element.asType(), parcelableTypeMirror)) {//Parcelable
-                        buffer.append(finalValue).append(" =  t.getIntent().");
-                        buffer.append("getParcelableExtra($S)");
-                    } else if (typeUtils.isSubtype(element.asType(), serializableTypeMirror)) {
-                        buffer.append(finalValue).append(" =  t.getIntent().");
-                        buffer.append("getSerializableExtra($S)");
                     } else if (type == TypeKind.DOUBLE.ordinal()) {
                         buffer.append(finalValue).append(" =  t.getIntent().");
                         buffer.append("getDoubleExtra($S,").append(finalValue).append(")");
@@ -180,6 +175,16 @@ public class ParameterProcessor extends AbstractProcessor {
                     } else if (type == TypeKind.LONG.ordinal()) {
                         buffer.append(finalValue).append(" =  t.getIntent().");
                         buffer.append("getLongExtra($S,").append(finalValue).append(")");
+                    } else if (typeUtils.isSubtype(element.asType(), parcelableTypeMirror)) {//Parcelable的子类
+                        buffer.append(finalValue).append(" =  t.getIntent().");
+                        buffer.append("getParcelableExtra($S)");
+                    } else if (typeUtils.isSubtype(element.asType(), serializableTypeMirror)) {//Serializable的实现类
+                        messager.printMessage(Diagnostic.Kind.NOTE, element.asType().toString());
+                        buffer.append(finalValue).append(" = ");//t.finalValue
+                        //int[]、 String[]、Bundle、ArrayList和Map实现了Serializable，我们只需要强转即可
+                        buffer.append("(").append(element.asType().toString()).append(")");
+                        buffer.append("t.getIntent().");
+                        buffer.append("getSerializableExtra($S)");
                     }
                     builder.addStatement(buffer.toString(), annotationValue);
                 } else if (typeUtils.isSubtype(otherType, appFragmentTypeMirror) ||

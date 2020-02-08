@@ -36,7 +36,7 @@ android {
         // 切记：必须写在defaultConfig节点下
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [MODEL_NAME: project.getName()]
+                arguments = [MODEL_NAME: project.getName(),AROUTER_MODULE_NAME: project.getName()]
             }
         }
     }
@@ -71,5 +71,9 @@ dependencies {
     }
     annotationProcessor project(":complier")
     implementation project(":common")
+
+
+    annotationProcessor 'com.alibaba:arouter-compiler:1.2.2'
+
 
 }
