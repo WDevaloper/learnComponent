@@ -1,2 +1,2 @@
-include ':app', ':order', ':personal', ':annotation', ':complier', ':arouter_api', ':common'
+include ':app', ':common', ':order', ':personal', ':annotation', ':complier', ':arouter_api'
 rootProject.name='LearnCompoent'

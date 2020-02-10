@@ -32,6 +32,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
@@ -148,6 +149,9 @@ public class ParameterProcessor extends AbstractProcessor {
                 // 被@Parameter注解的属性名
                 String filedName = element.getSimpleName().toString();
 
+                TypeMirror capture = typeUtils.capture(typeMirror);
+                messager.printMessage(Diagnostic.Kind.NOTE, "capture>>>>" + capture);
+
 
                 // @Parameter注解获取属性名
                 String annotationValue = element.getAnnotation(Parameter.class).name();
@@ -222,6 +226,9 @@ public class ParameterProcessor extends AbstractProcessor {
     private void valueOfParameter(Set<? extends Element> elements) {
         for (Element element : elements) {
             TypeElement typeElement = (TypeElement) element.getEnclosingElement();
+            SimpleElementVisitorImpl elementVisitor = new SimpleElementVisitorImpl(messager);
+            element.accept(elementVisitor, null);
+
             if (tempPrameterMap.containsKey(typeElement)) {
                 tempPrameterMap.get(typeElement).add(element);
             } else {
