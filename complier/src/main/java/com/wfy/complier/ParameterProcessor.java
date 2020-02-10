@@ -29,6 +29,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
@@ -149,6 +150,8 @@ public class ParameterProcessor extends AbstractProcessor {
                 String filedName = element.getSimpleName().toString();
 
 
+                showLog(element, typeMirror);
+
                 // @Parameter注解获取属性名
                 String annotationValue = element.getAnnotation(Parameter.class).name();
                 annotationValue = EmptyUtils.isEmpty(annotationValue) ? filedName : annotationValue;
@@ -217,6 +220,14 @@ public class ParameterProcessor extends AbstractProcessor {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void showLog(Element element, TypeMirror typeMirror) {
+        int type = typeMirror.getKind().ordinal();
+        TypeMirror capture = typeUtils.capture(typeMirror);
+        messager.printMessage(Diagnostic.Kind.NOTE,
+                "capture>>> " + capture.toString() +
+                        ">>>>" + element.asType().toString());
     }
 
     private void valueOfParameter(Set<? extends Element> elements) {
