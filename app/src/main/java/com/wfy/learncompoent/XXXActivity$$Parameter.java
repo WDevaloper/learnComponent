@@ -15,6 +15,13 @@ public class XXXActivity$$Parameter implements ParameterInject {
         mainActivity.getIntent().getSerializableExtra("");
         ArrayList<Parcelable> parcelableArrayListExtra = mainActivity.getIntent().getParcelableArrayListExtra("");
         mainActivity.age = mainActivity.getIntent().getBundleExtra("").getInt("");
+        mainActivity.getIntent().getBooleanArrayExtra("");
+        mainActivity.getIntent().getBooleanExtra("",false);
+        mainActivity.getIntent().getBundleExtra("");
+        mainActivity.getIntent().getByteArrayExtra("");
+        mainActivity.getIntent().getByteExtra("",Byte.valueOf(""));
+        mainActivity.getIntent().getCharArrayExtra("");
+        mainActivity.getIntent().getCharExtra("",'a');
 
 //        new Fragment().getArguments().getString()"", 0);
     }

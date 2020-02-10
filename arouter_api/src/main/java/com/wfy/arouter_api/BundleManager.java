@@ -36,7 +36,7 @@ public class BundleManager {
         return this;
     }
 
-    public Object navigation(Context context) {
+      public Object navigation(Context context) {
         return RouterManager.getInstance().navigation(context, -1);
     }
 
