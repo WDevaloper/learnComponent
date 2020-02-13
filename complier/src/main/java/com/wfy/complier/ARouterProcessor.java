@@ -41,6 +41,8 @@ import javax.tools.JavaFileObject;
 
 
 /**
+ * ElementVisitor、TypeVisitor和AnnotationValueVisitor都可以操作
+ * <p>
  * 每个模块都会调用一次，会在指定模块下生成java文件，那么我们如何使用这些文件？
  * <p>
  * <p>

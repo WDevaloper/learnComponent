@@ -33,11 +33,14 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.SimpleElementVisitor6;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
 
 /**
+ * ElementVisitor、TypeVisitor和AnnotationValueVisitor都可以操作
+ * <p>
  * 每个模块都会调用一次，会在指定模块下生成java文件，那么我们如何使用这些文件？
  * <p>
  * <p>
@@ -58,6 +61,9 @@ import javax.tools.Diagnostic;
  * $L: 字面量，如："int value = $L",10
  * $N: 变量，如，user.$N,"name"
  * $T: 类或接口，如：$T,MainActivity
+ * <p>
+ * <p>
+ * <p>
  */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({Constants.PARAMETER_ANNOTATION_TYPES})
@@ -149,6 +155,9 @@ public class ParameterProcessor extends AbstractProcessor {
                 // 被@Parameter注解的属性名
                 String filedName = element.getSimpleName().toString();
 
+                TypeMirror capture = typeUtils.capture(typeMirror);
+                messager.printMessage(Diagnostic.Kind.NOTE, "capture>>>>" + capture);
+
 
                 showLog(element, typeMirror);
 
@@ -183,7 +192,7 @@ public class ParameterProcessor extends AbstractProcessor {
                     } else if (typeUtils.isSubtype(element.asType(), parcelableTypeMirror)) {//Parcelable的子类
                         buffer.append(finalValue).append(" =  t.getIntent().");
                         buffer.append("getParcelableExtra($S)");
-                    } else if (typeUtils.isSubtype(element.asType(), serializableTypeMirror)) {//Serializable的实现类
+                    } else if (typeUtils.isSubtype(element.asType(), serializableTypeMirror)) {//Serializable的实现类，declaredType继承至ReferenceType即应用类型
                         messager.printMessage(Diagnostic.Kind.NOTE, element.asType().toString());
                         buffer.append(finalValue).append(" = ");//t.finalValue
                         //int[]、 String[]、Bundle、ArrayList和Map实现了Serializable，我们只需要强转即可
@@ -233,6 +242,9 @@ public class ParameterProcessor extends AbstractProcessor {
     private void valueOfParameter(Set<? extends Element> elements) {
         for (Element element : elements) {
             TypeElement typeElement = (TypeElement) element.getEnclosingElement();
+            SimpleElementVisitorImpl elementVisitor = new SimpleElementVisitorImpl(messager);
+            element.accept(elementVisitor, null);
+
             if (tempPrameterMap.containsKey(typeElement)) {
                 tempPrameterMap.get(typeElement).add(element);
             } else {
