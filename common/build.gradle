@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.github.WDevaloper'
-version = '1.0'
 
 android {
     compileSdkVersion 29
