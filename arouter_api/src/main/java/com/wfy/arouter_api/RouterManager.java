@@ -23,7 +23,7 @@ public class RouterManager {
     // 路由详细路径
     private String path;
     private static RouterManager instance;
-    // Lru缓存，key:类名, value:路由组Group加载接口
+    // Lru缓存，key:组名, value:路由组Group加载接口
     private LruCache<String, ARouterLoadGroup> groupCache;
     // Lru缓存，key:类名, value:路由组Group对应的详细Path加载接口
     private LruCache<String, ARouterLoadPath> pathCache;

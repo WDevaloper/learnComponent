@@ -9,6 +9,7 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.ElementScanner6;
 import javax.tools.Diagnostic;
 
+
 //访问Java文件元素
 public class SimpleElementVisitorImpl extends ElementScanner6<Void, Void> {
 

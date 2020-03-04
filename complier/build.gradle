@@ -1,5 +1,6 @@
 apply plugin: 'java-library'
 
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // 注册注解，并对其生成META-INF的配置信息，rc2在gradle5.0后有坑
